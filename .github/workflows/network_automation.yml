@@ -7,11 +7,9 @@ on:
     paths:
       - 'ansible/**'
       - '.github/workflows/network_automation.yml'
-
-
 jobs:
   configure-network:
-    runs-on: self-hosted
+    runs-on: self-hosted 
 
     steps:
       - name: Check out repo
@@ -26,15 +24,17 @@ jobs:
 
       - name: Run Ansible Playbook
         env:
+          #create variables that store git action secret credentials
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           TOKEN: ${{ secrets.PAT }}
 
+          #ensures Ansible does not use SSH key authentication 
           ANSIBLE_HOST_KEY_CHECKING: False
 
         run: |
+          #specifiy the playbook name and inventory file to use along with passing credentials to connect to Cisco devices
           ansible-playbook ansible/configure_devices.yml  -i ansible/inventory.ini --extra-vars "ansible_user=${USERNAME} ansible_password=${PASSWORD}"
-
 
       - name: Commit and Push Backup
         run: |
