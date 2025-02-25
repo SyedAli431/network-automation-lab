@@ -1,11 +1,13 @@
 name: Network Automation
 
 on:
+  # Trigger on push to main
   push:
     branches: [ "main" ]
     paths:
       - 'ansible/**'
       - '.github/workflows/network_automation.yml'
+
 
 jobs:
   configure-network:
@@ -19,31 +21,27 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y ansible
           
+      - name: change directory
+        run: cd /etc/ansible/
+
       - name: Run Ansible Playbook
         env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           TOKEN: ${{ secrets.PAT }}
-          ANSIBLE_HOST_KEY_CHECKING: False
-        run: |
-          ansible-playbook /etc/ansible/ansible/configure_devices.yml -i /etc/ansible/ansible/inventory.ini --extra-vars "ansible_user=${USERNAME} ansible_password=${PASSWORD}"
 
-      - name: Move backup files to Git-tracked directory
+          ANSIBLE_HOST_KEY_CHECKING: False
+
         run: |
-          mkdir -p ansible/backups
-          sudo cp /etc/ansible/backups/*.txt ansible/backups/  # Move backups into the repo
+          ansible-playbook ansible/configure_devices.yml  -i ansible/inventory.ini --extra-vars "ansible_user=${USERNAME} ansible_password=${PASSWORD}"
+
 
       - name: Commit and Push Backup
         run: |
           git config --global user.name "Syed"
           git config --global user.email "ali431@sheridancollege.ca"
           git add ansible/backups
-          if ! git diff --cached --quiet; then
-            git commit -m "Automated running-config backup commit"
-            git push
-          else
-            echo "No changes to commit"
-          fi
-
+          git commit -m "Automated running-config backup commit" || echo "no changes to commit"
+          git push
 
 
