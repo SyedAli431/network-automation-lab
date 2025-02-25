@@ -3,7 +3,11 @@ name: Network Automation
 on:
   # Trigger on push to main
   push:
-    branches: [ "main"]
+    branches: [ "main" ]
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/network_automation.yml'
+
 
 jobs:
   configure-network:
@@ -16,6 +20,9 @@ jobs:
       - name: Install ansible
         run: |
           sudo apt-get update && sudo apt-get install -y ansible
+          
+      - name: change directory
+        run: cd /etc/ansible/
 
       - name: Run Ansible Playbook
         env:
@@ -31,8 +38,10 @@ jobs:
 
       - name: Commit and Push Backup
         run: |
-          git add .
+          git config --global user.name "Syed"
+          git config --global user.email "ali431@sheridancollege.ca"
+          git add ansible/backups
           git commit -m "Automated running-config backup commit" || echo "no changes to commit"
-          git push ${{ secrets.PAT }}
+          git push
 
 
