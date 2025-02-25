@@ -38,8 +38,6 @@ jobs:
 
       - name: Commit and Push Backup
         run: |
-          cd /etc/ansible/backups
-          git init
           git config --global user.name "Syed"
           git config --global user.email "ali431@sheridancollege.ca"
           git add ansible/backups
