@@ -26,10 +26,6 @@ jobs:
 
       - name: Run Ansible Playbook
         env:
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          TOKEN: ${{ secrets.PAT }}
-
           ANSIBLE_HOST_KEY_CHECKING: False
 
         run: |
