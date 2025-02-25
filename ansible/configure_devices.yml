@@ -1,0 +1,53 @@
+---
+
+# play 1 configuring Cisco Router 1 Syed
+
+- name: Configuring Cisco router 1
+  hosts: Cisco1
+  gather_facts: false
+
+  tasks:
+    - name: Setting up OSPF on Cisco Router Syed
+      ios_config:
+        lines:
+          - router ospf 1
+          - router-id 10.1.1.1
+          - network 192.168.122.2 0.0.0.0 area 0
+
+    - name: Show running configuration on Router Syed
+      ios_command:
+        commands:
+          - show run
+      register: config
+
+    - name: Backing up router Syed configurations
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: "/network-automation-lab/ansible/backups/Syed_config.txt"
+
+
+
+#play 2 configuring Cisco Router 2 Ali
+
+- name: Configuring Cisco router 2
+  hosts: Cisco2
+  gather_facts: false
+
+  tasks:
+    - name: Setting up OSPF on Cisco Router Ali
+      ios_config:
+        lines:
+          - router ospf 1
+          - router-id 10.2.2.2
+          - network 192.168.122.3 0.0.0.0 area 0
+
+    - name: Show running configuration on Router Ali
+      ios_command:
+        commands:
+          - show run
+      register: config
+
+    - name: Backing up router Ali configurations
+      copy:
+        content: "{{ config.stdout[0]}}"
+        dest: "/network-automation-lab/ansible/backups/Ali_config.txt"
