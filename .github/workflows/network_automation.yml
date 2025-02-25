@@ -30,7 +30,8 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
 
         run: |
-          ansible-playbook ansible/configure_devices.yml  -i ansible/inventory.ini
+          ansible-playbook ansible/configure_devices.yml  -i ansible/inventory.ini --extra-vars "ansible_user=${USERNAME} ansible_password=${PASSWORD}"
+
 
       - name: Commit and Push Backup
         run: |
