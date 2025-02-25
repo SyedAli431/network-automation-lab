@@ -23,7 +23,7 @@
     - name: Backing up router Syed configurations
       copy:
         content: "{{ config.stdout[0] }}"
-        dest: "/network-automation-lab/ansible/backups/Syed_config.txt"
+        dest: "/ansible/backups/Syed_config.txt"
 
 
 
@@ -50,4 +50,4 @@
     - name: Backing up router Ali configurations
       copy:
         content: "{{ config.stdout[0]}}"
-        dest: "/network-automation-lab/ansible/backups/Ali_config.txt"
+        dest: "/ansible/backups/Ali_config.txt"
