@@ -23,9 +23,10 @@
     - name: Backing up router Syed configurations
       copy:
         content: "{{ config.stdout[0] }}"
-        dest: "{{ lookup('env', 'GITHUB_WORKSPACE') }}/ansible/backups/Syed_config.txt"
-
-
+        #The lookup('env', 'GITHUB_WORKSPACE') will get the name of the path the git runner uses to execute the playbook
+        #The ansible script then places the configuration file in the runners corresponding /ansible/backups directory 
+        #so that the runner can directly commit the files to GitHub repo
+        dest: "{{ lookup('env', 'GITHUB_WORKSPACE') }}/ansible/backups/Syed_config.txt" 
 
 #play 2 configuring Cisco Router 2 Ali
 
