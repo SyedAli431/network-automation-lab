@@ -36,6 +36,10 @@ jobs:
         run: |
           ansible-playbook ansible/configure_devices.yml  -i ansible/inventory.ini
 
+      - name: Move backup files to the directory that is tracked by git
+        run: |
+          sudo cp /etc/ansible/backups/*.txt $GITHUB_WORKSPACE/ansible/backups/
+          
       - name: Commit and Push Backup
         run: |
           git config --global user.name "Syed"
