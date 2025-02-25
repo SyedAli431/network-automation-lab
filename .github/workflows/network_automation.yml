@@ -42,7 +42,7 @@ jobs:
           git config --global user.email "ali431@sheridancollege.ca"
           git add ansible/backups
           git commit -m "Automated running-config backup commit" || echo "no changes to commit"
-          git push https://x-access-token:${TOKEN}@github.com/SyedAli431/network-automation-lab.git
+          git push
 
 
 
